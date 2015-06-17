@@ -1,0 +1,73 @@
+---
+- hosts: all
+  sudo: yes
+
+  vars:
+    ghost_user: ghost
+    www_folder: /var/www
+    ghost_folder: "{{www_folder}}"/ghost
+
+
+  tasks: 
+
+    - debug: msg="This will upgrade your NODE to a stable version!"
+
+    - name: Install required packages for blog
+      apt: pkg={{ item }} update_cache=yes state=present force=yes 
+      with_items:
+        - nodejs
+        - npm
+        - wget
+        - zip
+        - vim
+
+    - name: Create ghost user
+      user: name={{ghost_user}}
+
+    - name: Creating www_folder dir
+      file: path={{www_folder}} state=directory
+
+    - name: Creating ghost_folder dir
+      file: path={{ghost_folder}}
+            state=directory
+            owner={{ghost_user}}
+            group={{ghost_user}}
+
+    - name: Grab ghost_folder
+      get_url: url=https://ghost.org/zip/ghost-latest.zip
+               dest={{www_folder}}
+               validate_certs=no
+
+    - name: Grab downloaded version of ghost
+      command: bash -lc "ls '{{www_folder}}' | grep ghost-"
+      register: ghost_zip
+
+    - name: Unziping
+      unarchive: src={{www_folder}}/{{ghost_zip.stdout}} 
+                 dest={{ghost_folder}}
+                 copy=no
+                 owner={{ghost_user}}
+                 group={{ghost_user}}
+
+    - name: Clean NPM cache
+      command: npm cache clean -f
+
+    - name: Double check node
+      npm: name=n global=yes state=latest
+
+    - name: Checking latest stable
+      command: n stable
+
+    - name: Install forever
+      npm: name=forever global=yes state=present
+
+    - name: Install it
+      command: npm install --production
+               chdir={{ghost_folder}}
+
+    - name: Copy config file
+      copy: src=config.js dest={{ghost_folder}}
+
+    - name: Run ghost
+      command: NODE_ENV=production forever start index.js
+               chdir={{ghost_folder}}
