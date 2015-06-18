@@ -5,7 +5,7 @@
   vars:
     ghost_user: ghost
     www_folder: /var/www
-    ghost_folder: "{{www_folder}}"/ghost
+    ghost_folder: "{{www_folder}}/ghost"
 
 
   tasks: 
@@ -68,6 +68,9 @@
     - name: Copy config file
       copy: src=config.js dest={{ghost_folder}}
 
+    - name: Copy forever start stop script
+      copy: src=forever.sh dest={{ghost_folder}}
+
     - name: Run ghost
-      command: NODE_ENV=production forever start index.js
-               chdir={{ghost_folder}}
+      command: ./forever.sh start
+              chdir={{ghost_folder}}
