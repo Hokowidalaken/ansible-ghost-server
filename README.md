@@ -2,7 +2,8 @@
 
 An ansible playbook to build ghost blog
 
-** OS Supported***: Ubuntu
+**OS Supported**: Ubuntu
+
 **Important**: This script will update your nodejs to a stable version
 
 ### Packages installed
