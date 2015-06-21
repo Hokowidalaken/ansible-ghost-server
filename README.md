@@ -13,21 +13,16 @@ An ansible playbook to build ghost blog
 
 ### Configurations
 
-* Create ghost user (required in ghost tutorials)
+* URL: http://localhost:2368/
 * Instalation directory: /var/www/ghost (recommended by ghost tutorials)
-* Use forever.sh bash script to start and stop the server
+* Create ghost user (required in ghost tutorials)
+* Instead running with *npm start --production*, a script called forever.sh was created to start and stop ghost.
+* Add forever.sh to cron so it can start ghost on every reboot
 
-### Bash script to stop/start the server
 
-Instead running with *npm start --production*, a script called forever.sh was created.
+### Run ghost manually in the server
 
-**Why a script?**
-
-1. npm doesn't run in background and forever does this (recommended by ghost installation tutorial). 
-2. You need to pass environment variables to forever and the command becomes quite long 
-
-**To run ghost**
-
+Start
 
 ```bash
 
@@ -37,15 +32,12 @@ $sudo ./forever.sh start
 
 ```
 
-
-
-**To stop ghost**
+Stop
 
 ```bash
 
 $cd /var/www/ghost
 
-$sudo ./forever.sh stort
-
+$sudo ./forever.sh stop
 
 ```
