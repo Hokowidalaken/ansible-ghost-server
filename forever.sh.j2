@@ -11,7 +11,7 @@ function stopservice {
 
 function startservice {
     echo "Starting blog"
-    su - ghost -c "cd /var/www/ghost; NODE_ENV=production forever start index.js"
+    su - ghost -c "cd {{ghost_folder}}; NODE_ENV=production forever start index.js"
 }
 
 

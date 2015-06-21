@@ -7,9 +7,7 @@
     www_folder: /var/www
     ghost_folder: "{{www_folder}}/ghost"
 
-
-  tasks: 
-
+  tasks:
     - debug: msg="This will upgrade your NODE to a stable version!"
 
     - name: Install required packages for blog
@@ -69,7 +67,24 @@
       copy: src=config.js dest={{ghost_folder}}
 
     - name: Copy forever start stop script
-      copy: src=forever.sh dest={{ghost_folder}}
+      template: src=forever.sh.j2 
+                dest={{ghost_folder}}/forever.sh
+                mode=0744
+
+    - name: Change ghost folder permission
+      file: path={{ghost_folder}}
+            recurse=yes
+            state=directory
+            owner={{ghost_user}}
+            group={{ghost_user}}
+
+    - name: Add ghost to cron.d to start every reboot
+      cron: name="start ghost on reboot"
+            special_time=reboot
+            job="{{ghost_folder}}/forever.sh start"
+            user=root
+            cron_file=ghost
+            state=present
 
     - name: Run ghost
       command: ./forever.sh start
