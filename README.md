@@ -6,6 +6,28 @@ An ansible playbook to build ghost blog
 
 **Important**: This script will update your nodejs to a stable version
 
+### How to run the installation
+
+#### In another machine:
+
+Install ansible in your machine and clone this repository.
+
+Edit the inventory file with the host's ips you want to run sinopia on
+
+Run:
+```bash
+ansible-playbook -i inventory playbook.yml -u <machine-user> -kK
+```
+
+#### In vagrant
+
+Install ansible in your machine and clone this repository.
+
+Run:
+```bash
+vagrant up
+```
+
 ### Packages installed
 * Nodejs (latest stable)
 * Npm
