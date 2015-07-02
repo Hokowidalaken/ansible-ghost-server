@@ -8,13 +8,14 @@ An ansible playbook to build ghost blog
 
 ### How to run the installation
 
-#### In another machine:
+#### In another machine
 
 Install ansible in your machine and clone this repository.
 
 Edit the inventory file with the host's ips you want to run sinopia on
 
 Run:
+
 ```bash
 ansible-playbook -i inventory playbook.yml -u <machine-user> -kK
 ```
@@ -28,14 +29,14 @@ Run:
 vagrant up
 ```
 
-### Packages installed
+### Packages installed by Ansible
 * Nodejs (latest stable)
 * Npm
 * Wget
 * zip
 * vim
 
-### Configurations
+### Configurations made by Ansible
 
 * URL: http://localhost:2368/
 * Instalation directory: /var/www/ghost (recommended by ghost tutorials)
@@ -45,6 +46,8 @@ vagrant up
 
 
 ### Run ghost manually in the server
+
+TODO: Improve the script when stoping
 
 Start
 
